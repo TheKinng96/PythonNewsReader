@@ -3,12 +3,24 @@ from bs4 import BeautifulSoup
 import pprint
 
 res = requests.get('https://news.ycombinator.com/')
+res2 = requests.get('https://news.ycombinator.com/news?p=1')
+
 soup = BeautifulSoup(res.text, 'html.parser')
+soup2 = BeautifulSoup(res2.text, 'html.parser')
+
 links = soup.select('.storylink')
+links2 = soup.select('.storylink')
+
 subtext = soup.select('.subtext')
+subtext2 = soup.select('.subtext')
+
+mega_links = links + links2
+mega_subtext = subtext + subtext2
+
 
 def sort_stories_by_votes(hnlist):
     return sorted(hnlist, key=lambda k: k['votes'], reverse=True)
+
 
 def create_custom_hn(links, subtext):
     hn = []
@@ -23,4 +35,4 @@ def create_custom_hn(links, subtext):
     return sort_stories_by_votes(hn)
 
 
-pprint.pprint(create_custom_hn(links, subtext))
+pprint.pprint(create_custom_hn(mega_links, mega_subtext))
